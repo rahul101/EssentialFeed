@@ -31,8 +31,9 @@ final class EssentialFeedTests: XCTestCase {
         let url = URL(string: "https://abcd.com")!
         let (sut, client) = makeSUT(url: url)
         sut.load()
+        sut.load()
        // XCTAssertEqual(client.requestedUrl , url)
-        XCTAssertEqual(client.requestedURLs , [url])
+        XCTAssertEqual(client.requestedURLs , [url ,url])
     }
     
 
