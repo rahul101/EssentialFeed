@@ -18,7 +18,8 @@ public final class RemoteFeedLoader {
     
     public func load() {
         client.get(from: url)
-        client.get(from: url)
+        // For Multiples calls we make the requestUL as Array
+       //  client.get(from: url)
     }
     
 }
