@@ -30,8 +30,16 @@ final class EssentialFeedTests: XCTestCase {
     func test_load_requestsDataFromUrl() {
         let url = URL(string: "https://abcd.com")!
         let (sut, client) = makeSUT(url: url)
-        sut.load()
-        sut.load()
+        sut.load{_ in }
+       // XCTAssertEqual(client.requestedUrl , url)
+        XCTAssertEqual(client.requestedURLs , [url])
+    }
+    
+    func test_load_requestsDataFromUrlTwice() {
+        let url = URL(string: "https://abcd.com")!
+        let (sut, client) = makeSUT(url: url)
+        sut.load{_ in }
+        sut.load{_ in }
        // XCTAssertEqual(client.requestedUrl , url)
         XCTAssertEqual(client.requestedURLs , [url ,url])
     }
