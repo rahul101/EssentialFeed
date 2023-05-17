@@ -36,14 +36,19 @@ final class EssentialFeedTests: XCTestCase {
         XCTAssertEqual(client.requestedURLs , [url ,url])
     }
     
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
     
+    func test_load_deliversErrorOnClientError() {
+            let (sut, client) = makeSUT()
+            client.error = NSError(domain: "Test", code: 0)
+
+            var capturedError: RemoteFeedLoader.Error?
+            sut.load { error in
+                capturedError = error
+                
+            }
+
+            XCTAssertEqual(capturedError, .connectivity)
+        }
     
     //MARK : Helper
     
@@ -59,9 +64,17 @@ final class EssentialFeedTests: XCTestCase {
         
         //var requestedUrl: URL?
         var requestedURLs = [URL]()
-        func get(from url: URL) {
-            //requestedUrl = url
+        var error: Error?
+//        func get(from url: URL) {
+//            //requestedUrl = url
+//
+//        }
+        func get(from url: URL, completion: @escaping (Error) -> Void) {
+            if let error = error {
+                completion(error)
+            }
             requestedURLs.append(url)
+
         }
     }
 
