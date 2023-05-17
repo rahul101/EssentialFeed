@@ -75,7 +75,6 @@ final class EssentialFeedTests: XCTestCase {
             client.complete(withStatusCode: code, at: index)
             
             XCTAssertEqual(capturedErrors, [.invalidData])
-            XCTAssertEqual(capturedErrors, [.invalidData])
         }
     }
 
@@ -98,7 +97,7 @@ final class EssentialFeedTests: XCTestCase {
         //var error: Error? // replaceing stubbing by capature values instead
        // var completions = [(Error) -> Void]()
         
-        private var messages = [(url: URL, completion: (Error) -> Void)]()
+        private var messages = [(url: URL, completion: (HTTPClientResult) -> Void)]()
         var requestedURLs: [URL] {
             return messages.map { $0.url }
         }
@@ -106,7 +105,7 @@ final class EssentialFeedTests: XCTestCase {
 //            //requestedUrl = url
 //
 //        }
-        func get(from url: URL, completion: @escaping (Error?, HTTPURLResponse?) -> Void) {
+        func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void) {
 //            if let error = error {
 //                completion(error)
 //            }
@@ -116,7 +115,7 @@ final class EssentialFeedTests: XCTestCase {
         }
         func complete(with error: Error, at index: Int = 0) {
             //completions[index](error)
-            messages[index].completion(error,nil)
+            messages[index].completion(.failure(error))
         }
         
         func complete(withStatusCode code: Int, at index: Int = 0) {
@@ -125,8 +124,8 @@ final class EssentialFeedTests: XCTestCase {
                 statusCode: code,
                 httpVersion: nil,
                 headerFields: nil
-            )
-            messages[index].completion(nil, response)
+            )!
+            messages[index].completion(.success(response))
         }
     }
 
