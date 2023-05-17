@@ -63,9 +63,11 @@ final class EssentialFeedTests: XCTestCase {
     private class HTTPClientSpy: HTTPClient {
         
         //var requestedUrl: URL?
-        var requestedURLs = [URL]()
+       // var requestedURLs = [URL]()
         //var error: Error? // replaceing stubbing by capature values instead
-        var completions = [(Error) -> Void]()
+       // var completions = [(Error) -> Void]()
+        
+        private var messages = [(url: URL, completion: (Error) -> Void)]()
 //        func get(from url: URL) {
 //            //requestedUrl = url
 //
@@ -74,12 +76,13 @@ final class EssentialFeedTests: XCTestCase {
 //            if let error = error {
 //                completion(error)
 //            }
-            completions.append(completion)
-            requestedURLs.append(url)
-
+//            completions.append(completion)
+//            requestedURLs.append(url)
+            messages.append((url, completion))
         }
         func complete(with error: Error, at index: Int = 0) {
-            completions[index](error)
+            //completions[index](error)
+            messages[index].completion(error)
         }
     }
 
