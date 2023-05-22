@@ -111,7 +111,7 @@ final class EssentialFeedTests: XCTestCase {
         var capturedResults = [RemoteFeedLoader.Result]()
         sut.load { capturedResults.append($0) }
         
-        let emptyListJSON = Data(bytes: "{\"items\": []}".utf8)
+        let emptyListJSON = makeItemsJSON([])
         client.complete(withStatusCode: 200, data: emptyListJSON)
         
         XCTAssertEqual(capturedResults, [.success([])])
@@ -188,13 +188,12 @@ final class EssentialFeedTests: XCTestCase {
         let item = FeedItem(id: id, description: description, location: location, image: image)
         
         let json = [
-            "id": id.uuidString,
-            "description": description,
-            "location": location,
-            "image": image.absoluteString
-        ].reduce(into: [String: Any]()) { (acc, e) in
-            if let value = e.value { acc[e.key] = value }
-        }
+          "id": id.uuidString,
+          "description": description,
+          "location": location,
+          "image": image.absoluteString
+        ].compactMapValues { $0 }
+
         
         return (item, json)
     }
